@@ -28,15 +28,23 @@ until HTTPS and the live domain are verified.
 
 ## Deploy and verify
 
-1. Deploy the API from `server` with `npm ci` and `npm start`.
-2. Configure the platform health probe to `GET /health`; it returns success only
+1. Create the Render service from the repository's root `render.yaml`. The
+   blueprint deploys `server` with `npm ci` and `npm start`, creates distinct
+   JWT secrets, and asks for the existing Atlas `MONGO_URI`. Do not paste
+   credentials into source control or chat.
+2. Set `BUYZA_API_ORIGIN` in the Vercel project's server-side environment
+   variables to the Render service origin (for example,
+   `https://buyza-api.onrender.com`), with no path or trailing slash. The
+   `client/api/[...path].js` function forwards `/api/*` requests through the
+   Vercel origin so auth cookies remain same-origin.
+3. Configure the Render health probe to `GET /health`; it returns success only
    after a MongoDB ping succeeds and does not expose database details.
-3. Deploy the client with `npm ci` and `npm run build`. Configure SPA fallback
-   rewrites to `index.html`, `/sitemap.xml` and `/robots.txt` to the API, and
-   security/cache headers appropriate to the selected host.
-4. Verify HTTPS, CORS, cookies, login/refresh/logout, a guest COD order, email
+4. Deploy the client with `npm ci` and `npm run build`. Keep Vercel's SPA
+   fallback and configure security/cache headers appropriate to the selected
+   host.
+5. Verify HTTPS, CORS, cookies, login/refresh/logout, a guest COD order, email
    delivery, uploads, sitemap, robots, and the CI status.
-5. Keep one API instance until hosting, database, and worker behavior have been
+6. Keep one API instance until hosting, database, and worker behavior have been
    validated. Graceful shutdown stops accepting requests, stops the email
    scheduler, waits for an active worker tick, and closes MongoDB.
 

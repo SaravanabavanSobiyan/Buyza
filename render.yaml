@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: buyza-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: server
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    maxShutdownDelaySeconds: 60
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: SITE_URL
+        value: https://client-bay-tau-10.vercel.app
+      - key: CLIENT_URL
+        value: https://client-bay-tau-10.vercel.app
+      - key: ALLOWED_ORIGINS
+        value: https://client-bay-tau-10.vercel.app
+      - key: API_URL
+        value: https://client-bay-tau-10.vercel.app/api
+      - key: TRUST_PROXY_HOPS
+        value: "1"
+      - key: ENABLE_HSTS
+        value: "false"
+      - key: ALLOW_INDEXING
+        value: "false"
