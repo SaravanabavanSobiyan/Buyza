@@ -1,0 +1,1287 @@
+@import "tailwindcss";
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 5rem;
+}
+
+a,
+button,
+[role="button"],
+input,
+select,
+textarea,
+label,
+summary {
+  touch-action: manipulation;
+}
+
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="hidden"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+.tap {
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+
+.tap-y {
+  min-height: 44px;
+  align-items: center;
+}
+
+@keyframes sheet-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes sheet-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes sheet-in-bottom {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes sheet-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sheet-left { animation: sheet-in-left 0.2s ease-out; }
+.sheet-right { animation: sheet-in-right 0.2s ease-out; }
+.sheet-bottom { animation: sheet-in-bottom 0.2s ease-out; }
+.sheet-overlay { animation: sheet-fade 0.2s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-left,
+  .sheet-right,
+  .sheet-bottom,
+  .sheet-overlay {
+    animation: none;
+  }
+}
+
+.product-image-track::-webkit-scrollbar { display: none; }
+
+.admin-content {
+  min-width: 0;
+}
+
+.admin-content *,
+.admin-content *::before,
+.admin-content *::after {
+  box-sizing: border-box;
+}
+
+.admin-content input,
+.admin-content select,
+.admin-content textarea,
+.admin-content button {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.admin-content table {
+  table-layout: auto;
+}
+
+.admin-content th,
+.admin-content td,
+.admin-content p,
+.admin-content span {
+  overflow-wrap: anywhere;
+}
+
+.admin-content img,
+.admin-content svg {
+  max-width: 100%;
+}
+
+:root {
+  --buyza-ink: #46382f;
+  --buyza-gold: #c9a96e;
+  --buyza-gold-dark: #9a7946;
+  --buyza-cream: #faf7f2;
+  --buyza-beige: #e8e1d7;
+  --buyza-muted: #6b665f;
+  --buyza-purple: #6d3df5;
+  --buyza-pink: #ff6fae;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-wrap: break-word;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--buyza-cream);
+  color: var(--buyza-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+::selection {
+  background: var(--buyza-gold);
+  color: var(--buyza-ink);
+}
+
+.buyza-wordmark {
+  color: var(--buyza-ink);
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.buyza-wordmark::after {
+  color: var(--buyza-gold);
+  content: ".";
+}
+
+.buyza-admin-wordmark {
+  align-items: baseline;
+  display: inline-flex;
+  gap: 0.45rem;
+}
+
+.buyza-admin-wordmark-label {
+  color: #6d3df5;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.buyza-admin-nav-link {
+  color: #6d3df5;
+  font-weight: 600;
+}
+
+.buyza-admin-nav-link:hover {
+  color: #4f27c7;
+}
+
+.buyza-primary {
+  background: var(--buyza-ink);
+  color: white;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.cancel-order-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #b91c1c;
+  color: #ffffff;
+  visibility: visible;
+}
+
+.cancel-order-submit:hover:not(:disabled) {
+  background-color: #991b1b;
+}
+
+.cancel-order-submit:disabled {
+  background-color: #9ca3af;
+}
+
+.buyza-auth-page {
+  min-height: calc(100vh - 65px);
+  background: #292d2e;
+}
+
+.buyza-customer-auth-page {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(201, 169, 110, 0.13), transparent 28rem),
+    var(--buyza-cream);
+}
+
+.buyza-auth-card {
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.buyza-customer-auth-card {
+  border-color: var(--buyza-beige);
+  box-shadow: 0 18px 50px rgba(70, 56, 47, 0.14);
+}
+
+.buyza-auth-banner {
+  background: var(--buyza-ink);
+  color: #ffffff;
+}
+
+.buyza-auth-banner .buyza-wordmark {
+  color: var(--buyza-gold);
+  font-size: 1.05rem;
+}
+
+.buyza-auth-subtitle {
+  color: var(--buyza-muted);
+}
+
+.buyza-customer-auth-card .buyza-auth-input {
+  border-color: var(--buyza-beige);
+  background: #ffffff;
+  color: var(--buyza-ink);
+}
+
+.buyza-customer-auth-card .buyza-auth-input::placeholder {
+  color: #9a9389;
+}
+
+.buyza-customer-auth-card .buyza-auth-input:focus {
+  border-color: var(--buyza-gold);
+  box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.2);
+}
+
+.buyza-oauth-button {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  color: #34373b;
+  display: flex;
+  font-size: 0.875rem;
+  font-weight: 600;
+  gap: 0.55rem;
+  justify-content: center;
+  padding: 0.7rem 0.75rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.buyza-oauth-button:hover {
+  border-color: #b8bbc0;
+  box-shadow: 0 8px 18px rgba(23, 25, 28, 0.08);
+  transform: translateY(-1px);
+}
+
+.buyza-oauth-icon {
+  flex: 0 0 auto;
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+.buyza-auth-shell {
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+}
+
+.buyza-auth-visual {
+  background:
+    radial-gradient(circle at 75% 22%, rgba(255, 213, 92, 0.22), transparent 16rem),
+    linear-gradient(145deg, #171a36, #302267 52%, #671e69);
+}
+
+.buyza-auth-logo {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.buyza-auth-logo span {
+  color: #ffda65;
+}
+
+.buyza-auth-logo-admin {
+  color: #ffda65;
+  display: block;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  margin-top: 0.25rem;
+}
+
+.buyza-storefront-label {
+  align-items: center;
+  color: rgba(255, 255, 255, 0.72);
+  display: flex;
+  font-size: 0.65rem;
+  font-weight: 800;
+  gap: 0.5rem;
+  letter-spacing: 0.16em;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.buyza-live-dot {
+  animation: buyza-pulse 1.8s ease-in-out infinite;
+  background: #ffda65;
+  border-radius: 50%;
+  height: 0.45rem;
+  width: 0.45rem;
+}
+
+.buyza-auth-shape {
+  border: 1px solid rgba(255, 218, 101, 0.22);
+  border-radius: 50%;
+  position: absolute;
+}
+
+.buyza-auth-shape-one {
+  height: 27rem;
+  right: -10rem;
+  top: -11rem;
+  width: 27rem;
+}
+
+.buyza-auth-shape-two {
+  bottom: -14rem;
+  height: 30rem;
+  left: -14rem;
+  width: 30rem;
+}
+
+.buyza-shopping-art {
+  bottom: 1rem;
+  height: 230px;
+  position: absolute;
+  right: 7%;
+  width: 82%;
+}
+
+.buyza-shopper {
+  animation: buyza-shopper-bob 4.5s ease-in-out infinite;
+  bottom: 0;
+  left: 50%;
+  height: 215px;
+  position: absolute;
+  transform: translateX(-50%);
+  width: 190px;
+}
+
+.buyza-shopper-hair {
+  background: #3b2033;
+  border-radius: 50% 50% 45% 45%;
+  height: 78px;
+  left: 57px;
+  position: absolute;
+  top: 0;
+  width: 78px;
+  z-index: 1;
+}
+
+.buyza-shopper-head {
+  background: #f7bd9e;
+  border-radius: 48% 48% 45% 45%;
+  height: 62px;
+  left: 66px;
+  position: absolute;
+  top: 18px;
+  width: 58px;
+  z-index: 2;
+}
+
+.buyza-shopper-head::after {
+  border-bottom: 2px solid #8a4450;
+  content: "";
+  height: 8px;
+  left: 22px;
+  position: absolute;
+  top: 35px;
+  width: 14px;
+}
+
+.buyza-shopper-body {
+  background: #fff;
+  border-radius: 42px 42px 16px 16px;
+  bottom: 4px;
+  height: 125px;
+  left: 45px;
+  position: absolute;
+  width: 105px;
+}
+
+.buyza-shopper-body::before {
+  background: #f34d75;
+  border-radius: 8px;
+  content: "";
+  height: 56px;
+  left: 39px;
+  position: absolute;
+  top: 28px;
+  width: 28px;
+}
+
+.buyza-shopper-arm {
+  background: #f7bd9e;
+  border-radius: 20px;
+  height: 78px;
+  position: absolute;
+  top: 87px;
+  width: 18px;
+  z-index: 3;
+}
+
+.buyza-shopper-arm-left {
+  left: 35px;
+  transform: rotate(28deg);
+}
+
+.buyza-shopper-arm-right {
+  right: 28px;
+  transform: rotate(-35deg);
+}
+
+.buyza-shopper-phone {
+  background: #252733;
+  border: 3px solid #fff;
+  border-radius: 8px;
+  height: 43px;
+  position: absolute;
+  right: 12px;
+  top: 103px;
+  transform: rotate(-12deg);
+  width: 25px;
+  z-index: 4;
+}
+
+.buyza-shopper-phone span {
+  background: #ff91ae;
+  border-radius: 50%;
+  display: block;
+  height: 5px;
+  margin: 5px auto;
+  width: 5px;
+}
+
+.buyza-shopper-bag {
+  background: #ffe26b;
+  border-radius: 4px 4px 9px 9px;
+  bottom: 14px;
+  box-shadow: 0 10px 15px rgba(141, 27, 63, 0.18);
+  height: 56px;
+  position: absolute;
+  right: -17px;
+  transform: rotate(8deg);
+  width: 55px;
+  z-index: 4;
+}
+
+.buyza-shopper-bag::before {
+  border: 3px solid #ffe26b;
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+  content: "";
+  height: 20px;
+  left: 13px;
+  position: absolute;
+  top: -16px;
+  width: 25px;
+}
+
+.buyza-shopper-bag span {
+  color: #f34d75;
+  display: block;
+  font-size: 0.42rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin-top: 25px;
+  text-align: center;
+}
+
+.buyza-art-card {
+  animation: buyza-card-drift 4s ease-in-out infinite;
+  background: #ffda65;
+  border-radius: 0.9rem;
+  box-shadow: 0 14px 25px rgba(141, 27, 63, 0.18);
+  color: #261b4d;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+  padding: 0.8rem;
+  position: absolute;
+  text-align: center;
+}
+
+.buyza-art-card-left {
+  left: 4%;
+  top: 42%;
+  transform: rotate(-12deg);
+}
+
+.buyza-art-card-right {
+  animation-delay: -1.5s;
+  right: 3%;
+  top: 24%;
+  transform: rotate(12deg);
+}
+
+.buyza-cart-bubble {
+  align-items: center;
+  animation: buyza-pulse 2.2s ease-in-out infinite;
+  background: #ff6d9d;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  bottom: 28px;
+  color: #fff;
+  display: flex;
+  font-size: 1.8rem;
+  font-weight: 700;
+  height: 45px;
+  justify-content: center;
+  position: absolute;
+  right: 19%;
+  width: 45px;
+}
+
+.buyza-orbit {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  height: 15rem;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(18deg);
+  width: 23rem;
+}
+
+.buyza-orbit-two {
+  height: 12rem;
+  transform: translate(-50%, -50%) rotate(-24deg);
+  width: 19rem;
+}
+
+.buyza-auth-input {
+  border-color: #dfe2e6;
+  background: #fbfbfc;
+  color: #17191c;
+}
+
+.buyza-auth-input::placeholder {
+  color: #9ba0a6;
+}
+
+.buyza-auth-input:focus {
+  border-color: #17191c;
+  box-shadow: 0 0 0 3px rgba(23, 25, 28, 0.08);
+}
+
+.buyza-auth-input[aria-invalid="true"] {
+  border-color: #c76b61;
+}
+
+.buyza-auth-input[aria-invalid="true"]:focus {
+  border-color: #c76b61;
+  box-shadow: 0 0 0 3px rgba(199, 107, 97, 0.16);
+}
+
+.buyza-admin-auth-page {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 207, 92, 0.18), transparent 18rem),
+    #11152b;
+}
+
+.buyza-admin-auth-shell {
+  box-shadow: 0 28px 90px rgba(8, 10, 30, 0.48);
+}
+
+.buyza-admin-auth-visual {
+  background:
+    radial-gradient(circle at 72% 24%, rgba(255, 213, 92, 0.24), transparent 13rem),
+    linear-gradient(145deg, #11152b, #202b5e 55%, #3b2467);
+}
+
+.buyza-admin-badge {
+  display: block;
+  position: relative;
+  z-index: 1;
+  margin-top: 1.5rem;
+  color: #ffda65;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.buyza-admin-auth-card {
+  background: #fffdf8;
+}
+
+.buyza-admin-auth-card h1 {
+  color: #151a35;
+}
+
+.buyza-admin-auth-card .buyza-auth-input:focus {
+  border-color: #5865d8;
+  box-shadow: 0 0 0 3px rgba(88, 101, 216, 0.16);
+}
+
+.buyza-admin-submit {
+  background: linear-gradient(135deg, #202b5e, #6041a4);
+}
+
+.buyza-admin-submit:hover {
+  background: linear-gradient(135deg, #172049, #4e328d);
+}
+
+.buyza-primary:hover {
+  background: #5d4b3f;
+  transform: translateY(-1px);
+}
+
+.buyza-hero-cta-wrap {
+  position: relative;
+  display: inline-flex;
+  isolation: isolate;
+}
+
+.buyza-hero-cta-wrap::before {
+  position: absolute;
+  z-index: -1;
+  inset: -0.55rem;
+  border: 1px solid rgba(184, 63, 209, 0.3);
+  border-radius: 9999px;
+  content: "";
+  animation: buyza-cta-halo 2.8s ease-out infinite;
+}
+
+.buyza-hero-cta {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background: linear-gradient(110deg, #6d3df5, #b83fd1 55%, #ef4b9b);
+  box-shadow: 0 8px 20px rgba(109, 61, 245, 0.24);
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.buyza-hero-cta::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.32) 50%, transparent 70%);
+  content: "";
+  pointer-events: none;
+  transform: translateX(-120%);
+  animation: buyza-cta-shimmer 4s ease-in-out infinite;
+}
+
+.buyza-hero-cta:hover {
+  background: linear-gradient(110deg, #5c2fe0, #a82bc4 55%, #dd3788);
+  box-shadow: 0 12px 26px rgba(109, 61, 245, 0.32);
+  transform: translateY(-3px);
+}
+
+.buyza-hero-cta:focus-visible {
+  outline: 3px solid #ff8a4c;
+  outline-offset: 4px;
+}
+
+.buyza-hero-cta-label,
+.buyza-hero-cta-arrow {
+  position: relative;
+  z-index: 1;
+}
+
+.buyza-hero-cta-arrow {
+  transition: transform 180ms ease;
+}
+
+.buyza-hero-cta:hover .buyza-hero-cta-arrow {
+  transform: translate(3px, -2px);
+}
+
+.buyza-hero-cta-spark {
+  position: absolute;
+  z-index: 2;
+  color: #a76bff;
+  line-height: 1;
+  pointer-events: none;
+  animation: buyza-cta-sparkle 2.2s ease-in-out infinite;
+}
+
+.buyza-hero-cta-spark-one {
+  top: -0.65rem;
+  right: 1.2rem;
+  font-size: 0.9rem;
+}
+
+.buyza-hero-cta-spark-two {
+  bottom: -0.55rem;
+  left: 1.4rem;
+  color: #ed72a9;
+  font-size: 1.15rem;
+  animation-delay: 0.7s;
+}
+
+.buyza-hero-cta-spark-three {
+  top: 50%;
+  right: -0.85rem;
+  color: #f0a83b;
+  font-size: 1.4rem;
+  animation-delay: 1.2s;
+}
+
+.buyza-hero {
+  background: linear-gradient(135deg, #fff8f1 0%, #f5efff 50%, #eefaff 100%);
+}
+
+.buyza-kicker {
+  color: #8068b5;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+
+.buyza-gradient-text {
+  background: linear-gradient(90deg, #6d3df5, #ee4b9b 55%, #ff8a4c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.buyza-blob {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(2px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.buyza-blob-one {
+  background: #ffc9e7;
+  height: 14rem;
+  right: -5rem;
+  top: 4rem;
+  width: 14rem;
+}
+
+.buyza-blob-two {
+  background: #c9c0ff;
+  bottom: 1rem;
+  height: 8rem;
+  left: -4rem;
+  width: 8rem;
+}
+
+.buyza-sun {
+  background: #ffd85c;
+  border-radius: 50%;
+  height: 15rem;
+  left: 50%;
+  opacity: 0.8;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 15rem;
+}
+
+.buyza-hero-image {
+  animation: buyza-float 5s ease-in-out infinite;
+  filter: drop-shadow(0 24px 12px rgba(83, 47, 166, 0.25));
+}
+
+.buyza-art-card {
+  border-radius: 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  padding: 1rem;
+  position: absolute;
+  transform: rotate(-10deg);
+}
+
+.buyza-art-card-back {
+  background: #241b3b;
+  color: #ffe66d;
+  right: 12%;
+  top: 8%;
+}
+
+.buyza-floating-tag {
+  animation: buyza-float 4s ease-in-out infinite reverse;
+  border-radius: 1rem;
+  box-shadow: 0 16px 30px rgba(36, 27, 59, 0.14);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 0.85rem;
+  position: absolute;
+}
+
+.buyza-floating-tag-top {
+  background: #fff;
+  color: #6d3df5;
+  left: 2%;
+  top: 25%;
+  transform: rotate(-8deg);
+}
+
+.buyza-floating-tag-bottom {
+  background: #ff6fae;
+  bottom: 12%;
+  color: #fff;
+  right: 5%;
+  transform: rotate(8deg);
+}
+
+.buyza-floating-tag-bottom span {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.buyza-category-card {
+  border-radius: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 9rem;
+  overflow: hidden;
+  padding: 1.25rem;
+  position: relative;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.buyza-category-card::after {
+  animation: buyza-category-shine 6s ease-in-out infinite;
+  background: linear-gradient(110deg, transparent 25%, rgba(255, 255, 255, 0.62) 48%, transparent 70%);
+  content: "";
+  inset: -35% auto -35% -65%;
+  pointer-events: none;
+  position: absolute;
+  transform: skewX(-12deg);
+  width: 55%;
+}
+
+.buyza-category-card:nth-child(2)::after {
+  animation-delay: 1.2s;
+  animation-duration: 7s;
+}
+
+.buyza-category-card:nth-child(3)::after {
+  animation-delay: 2.4s;
+  animation-duration: 6.5s;
+}
+
+.buyza-category-card:nth-child(4)::after {
+  animation-delay: 3.6s;
+  animation-duration: 7.5s;
+}
+
+.buyza-category-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.buyza-category-card-tech {
+  background: #eee9ff;
+}
+
+.buyza-category-card-style {
+  background: #fce7f3;
+}
+
+.buyza-category-card-home {
+  background: #fff3c4;
+}
+
+.buyza-category-card-deals {
+  background: #d3f8fa;
+}
+
+.buyza-category-card:hover {
+  box-shadow: 0 14px 26px rgba(60, 42, 105, 0.12);
+  transform: translateY(-4px);
+}
+
+.buyza-category-icon {
+  align-items: center;
+  display: flex;
+  height: 2.8rem;
+  justify-content: center;
+  position: relative;
+  width: 2.8rem;
+}
+
+.buyza-category-icon-tech {
+  animation: buyza-category-bob 3s ease-in-out infinite;
+  background: #d7c7ff;
+  border-radius: 0.9rem;
+  transform: rotate(-8deg);
+}
+
+.buyza-category-icon-style {
+  animation: buyza-category-twinkle 2.8s ease-in-out infinite;
+}
+
+.buyza-category-icon-home {
+  animation: buyza-category-bob 3.4s ease-in-out infinite;
+}
+
+.buyza-category-icon-deals {
+  animation: buyza-category-wiggle 3.2s ease-in-out infinite;
+}
+
+.buyza-icon-device {
+  border: 2px solid currentColor;
+  border-radius: 0.25rem;
+  height: 1.45rem;
+  position: relative;
+  width: 1rem;
+}
+
+.buyza-icon-device::after {
+  background: currentColor;
+  border-radius: 50%;
+  bottom: 0.15rem;
+  content: "";
+  height: 0.18rem;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  width: 0.18rem;
+}
+
+.buyza-category-icon-style {
+  background: #ffc4df;
+  border-radius: 50%;
+}
+
+.buyza-icon-spark {
+  background: currentColor;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  height: 1.45rem;
+  width: 1.45rem;
+}
+
+.buyza-category-icon-home {
+  background: #ffe09a;
+  border-radius: 0.9rem 0.9rem 1.3rem 0.4rem;
+}
+
+.buyza-icon-house {
+  border: 2px solid currentColor;
+  border-top: 0;
+  height: 1.15rem;
+  margin-top: 0.45rem;
+  position: relative;
+  width: 1.35rem;
+}
+
+.buyza-icon-house::before {
+  border-left: 2px solid currentColor;
+  border-top: 2px solid currentColor;
+  content: "";
+  height: 0.9rem;
+  left: 0.1rem;
+  position: absolute;
+  top: -0.5rem;
+  transform: rotate(45deg);
+  width: 0.9rem;
+}
+
+.buyza-category-icon-deals {
+  background: #b7eff2;
+  border-radius: 0.8rem;
+  transform: rotate(8deg);
+}
+
+.buyza-icon-tag {
+  border: 2px solid currentColor;
+  border-radius: 0.25rem 0.25rem 0.25rem 0.7rem;
+  height: 1.25rem;
+  position: relative;
+  transform: rotate(-8deg);
+  width: 1.45rem;
+}
+
+.buyza-icon-tag::before {
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  content: "";
+  height: 0.25rem;
+  left: 0.18rem;
+  position: absolute;
+  top: 0.18rem;
+  width: 0.25rem;
+}
+
+.buyza-product-card {
+  overflow: hidden;
+  border: 1px solid #eee8f5;
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(60, 42, 105, 0.06);
+}
+
+.buyza-product-art {
+  align-items: center;
+  display: flex;
+  font-size: 1.4rem;
+  letter-spacing: 0.18em;
+  height: 12rem;
+  justify-content: center;
+  transition: transform 300ms ease;
+}
+
+.buyza-product-card:hover .buyza-product-art {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+.buyza-auth-shell {
+  box-shadow: 0 24px 70px rgba(65, 42, 113, 0.18);
+}
+
+.buyza-auth-visual {
+  background: linear-gradient(145deg, #5f32e8, #a23fe4 52%, #ff639e);
+}
+
+.buyza-auth-logo {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.buyza-auth-logo span {
+  color: #ffe66d;
+}
+
+.buyza-auth-orb {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  position: absolute;
+}
+
+.buyza-auth-orb-one {
+  height: 22rem;
+  right: -8rem;
+  top: -5rem;
+  width: 22rem;
+}
+
+.buyza-auth-orb-two {
+  bottom: -7rem;
+  height: 18rem;
+  left: -6rem;
+  width: 18rem;
+}
+
+.buyza-auth-sticker {
+  background: #ffe66d;
+  border-radius: 50%;
+  bottom: 7rem;
+  color: #5f32e8;
+  font-size: 1.7rem;
+  font-weight: 900;
+  height: 6rem;
+  line-height: 1;
+  padding-top: 0.9rem;
+  position: absolute;
+  right: 8rem;
+  text-align: center;
+  transform: rotate(12deg);
+  width: 6rem;
+}
+
+.buyza-auth-sticker span {
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+}
+
+.buyza-auth-image {
+  animation: buyza-float 5s ease-in-out infinite;
+  filter: drop-shadow(0 20px 10px rgba(41, 15, 98, 0.25));
+}
+
+.buyza-hero-art {
+  height: 100%;
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.buyza-hero-art .buyza-blob-one {
+  right: -3rem;
+  top: 0;
+}
+
+.buyza-hero-art .buyza-blob-two {
+  bottom: 1rem;
+  left: -3rem;
+}
+
+.buyza-hero-art .buyza-sun {
+  left: 75%;
+  top: 46%;
+}
+
+.buyza-hero-image {
+  height: auto;
+  left: 75%;
+  position: absolute;
+  top: 43%;
+  width: min(390px, 40vw);
+}
+
+.buyza-hero-art .buyza-floating-tag-top {
+  left: 57%;
+  top: 17%;
+}
+
+.buyza-hero-art .buyza-art-card-back {
+  right: 12%;
+  top: 10%;
+}
+
+.buyza-shopping-art .buyza-art-card {
+  background: #ffda65;
+  border-radius: 0.9rem;
+  box-shadow: 0 14px 25px rgba(141, 27, 63, 0.18);
+  color: #261b4d;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+  padding: 0.8rem;
+}
+
+.buyza-shopping-art .buyza-art-card-left {
+  left: 4%;
+  top: 42%;
+  transform: rotate(-12deg);
+}
+
+.buyza-shopping-art .buyza-art-card-right {
+  right: 3%;
+  top: 24%;
+  transform: rotate(12deg);
+}
+
+.buyza-shopping-art .buyza-art-card strong {
+  font-weight: 900;
+}
+
+@keyframes buyza-float {
+  0%, 100% { transform: translate(-50%, -50%) rotate(-2deg); }
+  50% { transform: translate(-50%, calc(-50% - 10px)) rotate(2deg); }
+}
+
+@keyframes buyza-shopper-bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+
+@keyframes buyza-card-drift {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: -9px; }
+}
+
+@keyframes buyza-pulse {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.12); }
+}
+
+@keyframes buyza-cta-shimmer {
+  0%, 65% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+@keyframes buyza-cta-halo {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.035); }
+}
+
+@keyframes buyza-cta-sparkle {
+  0%, 100% { opacity: 0.45; transform: translateY(0) scale(0.85) rotate(-8deg); }
+  50% { opacity: 1; transform: translateY(-3px) scale(1.12) rotate(8deg); }
+}
+
+@keyframes buyza-category-shine {
+  0%, 20% { transform: translateX(0) skewX(-12deg); }
+  75%, 100% { transform: translateX(310%) skewX(-12deg); }
+}
+
+@keyframes buyza-category-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -4px; }
+}
+
+@keyframes buyza-category-twinkle {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.08; }
+}
+
+@keyframes buyza-category-wiggle {
+  0%, 100% { rotate: 0deg; }
+  25% { rotate: -8deg; }
+  75% { rotate: 8deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buyza-category-card::after,
+  .buyza-category-icon-tech,
+  .buyza-category-icon-style,
+  .buyza-category-icon-home,
+  .buyza-category-icon-deals,
+  .buyza-hero-cta::before,
+  .buyza-hero-cta-wrap::before,
+  .buyza-hero-cta-spark {
+    animation: none;
+  }
+
+  .buyza-category-card,
+  .buyza-category-card:hover {
+    transition: none;
+    transform: none;
+  }
+
+  .buyza-hero-cta,
+  .buyza-hero-cta:hover,
+  .buyza-hero-cta-arrow {
+    transition: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .buyza-hero-art {
+    display: none;
+  }
+}
+
+.buyza-gold-link {
+  color: var(--buyza-gold-dark);
+}
+
+.buyza-gold-link:hover {
+  color: var(--buyza-ink);
+}
+
+/* Keep the existing utility-based screens on the Buyza palette. */
+.text-blue-600,
+.text-blue-700 {
+  color: var(--buyza-gold-dark);
+}
+
+.text-blue-600:hover,
+.text-blue-700:hover {
+  color: var(--buyza-ink);
+}
+
+.bg-blue-50 {
+  background-color: #fff7dc;
+}
+
+.border-blue-400 {
+  border-color: var(--buyza-gold);
+}
+
+.text-green-600 {
+  color: #527a3a;
+}
+
+.focus\:border-blue-500:focus {
+  border-color: var(--buyza-gold);
+}
+
+.focus\:ring-blue-200:focus {
+  --tw-ring-color: #f3df9b;
+}

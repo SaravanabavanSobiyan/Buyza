@@ -1,0 +1,12 @@
+process.env.NODE_ENV = "test";
+process.env.JWT_ACCESS_SECRET = "test-access-secret-test-access-secret-1234";
+process.env.JWT_REFRESH_SECRET = "test-refresh-secret-test-refresh-secret-1234";
+process.env.JWT_ACCESS_EXPIRES = "15m";
+process.env.CLIENT_URL = "https://shop.test";
+process.env.SITE_URL = "https://shop.test";
+process.env.ADMIN_EMAIL = "admin@store.test";
+process.env.STORE_NAME = "Test Store";
+process.env.SMTP_HOST = "";
+process.env.DISABLE_CONTACT_LIMIT = "true";
+process.env.DISABLE_RATE_LIMITS = "true";
+process.env.MONGOMS_VERSION = "7.0.14";

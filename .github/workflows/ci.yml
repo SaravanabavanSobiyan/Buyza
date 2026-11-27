@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  MONGOMS_VERSION: "7.0.14"
+  MONGOMS_DOWNLOAD_DIR: ${{ github.workspace }}/.mongodb-binaries
+
+jobs:
+  server:
+    name: Server (lint and tests)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - uses: actions/cache@v4
+        with:
+          path: ${{ env.MONGOMS_DOWNLOAD_DIR }}
+          key: mongodb-binary-${{ runner.os }}-${{ env.MONGOMS_VERSION }}
+      - run: npm ci
+      - run: npm run lint --if-present
+      - run: npm run test:ci
+      - name: Keep the coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-coverage
+          path: server/coverage/lcov-report
+          if-no-files-found: ignore
+          retention-days: 7
+
+  client:
+    name: Client (lint, tests, build)
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci
+      - run: npm run lint --if-present
+      - run: npm test
+      - run: npm run build
+        env:
+          VITE_SITE_URL: https://shop.test
+          VITE_ALLOW_INDEXING: "false"
+
+  ci-ok:
+    name: CI passed
+    if: always()
+    needs: [server, client]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check results
+        run: |
+          if [ "${{ needs.server.result }}" != "success" ] || [ "${{ needs.client.result }}" != "success" ]; then
+            echo "A required job failed or was cancelled."
+            exit 1
+          fi
+
+  audit:
+    name: Dependency audit (warning only)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Server dependencies
+        working-directory: server
+        run: npm audit --omit=dev --audit-level=high
+      - name: Client dependencies
+        working-directory: client
+        run: npm audit --omit=dev --audit-level=high

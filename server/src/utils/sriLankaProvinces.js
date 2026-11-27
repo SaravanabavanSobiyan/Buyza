@@ -1,0 +1,11 @@
+export const SRI_LANKAN_PROVINCES = [
+  "Central Province",
+  "Eastern Province",
+  "North Central Province",
+  "Northern Province",
+  "North Western Province",
+  "Sabaragamuwa Province",
+  "Southern Province",
+  "Uva Province",
+  "Western Province",
+];
