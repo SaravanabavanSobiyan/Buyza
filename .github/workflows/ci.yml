@@ -40,7 +40,7 @@ jobs:
       - run: npm run test:ci
       - name: Keep the coverage report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: server-coverage
           path: server/coverage/lcov-report
