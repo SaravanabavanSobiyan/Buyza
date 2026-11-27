@@ -1,8 +1,13 @@
 # Deployment and operations runbook
 
-This is a provider-neutral runbook. Hosting provider, region, domain, email
-service, and production database tier still need an owner decision. Do not
-enable production HSTS or indexing until HTTPS and the live domain are verified.
+The approved staging direction is a Render API with a Vercel frontend, using
+free tiers and no custom domain. Keep browser requests same-origin by proxying
+`/api` through the Vercel frontend to Render; calling the Render hostname
+directly would make the refresh cookie cross-site. This setup is for staging
+only: free services can sleep, and the free database tier does not provide the
+production backup guarantees required for go-live. Production budget, domain,
+and database tier remain unapproved. Do not enable production HSTS or indexing
+until HTTPS and the live domain are verified.
 
 ## Pre-deploy
 
@@ -60,6 +65,10 @@ enable production HSTS or indexing until HTTPS and the live domain are verified.
 - If `/health` fails, inspect API logs and Atlas connectivity/availability.
 - If login fails, check environment configuration, secret changes, cookies,
   CORS origins, and proxy-hop configuration without logging secret values.
+- Request handling rejects MongoDB operators, dotted keys, and prototype keys
+  before route handlers; input schemas keep database filters application-owned.
+  Do not enable global Mongoose `sanitizeFilter` without reworking trusted
+  query operators and rerunning the full suite.
 - If emails fail, check the outbox state, SMTP provider status, sender-domain
   authentication, and provider credentials.
 - If uploads fail, check Cloudinary credentials, provider status, and upload

@@ -38,10 +38,15 @@ describe("API security middleware", () => {
       .post("/api/auth/login")
       .send({ email: "a".repeat(110_000), password: "Password123" });
     const injected = await request(app).get("/api/products?name%5B%24gt%5D=");
+    const nestedInjected = await request(app)
+      .post("/api/auth/login")
+      .send({ email: { $ne: null }, password: "Password123" });
 
     expect(oversized.status).toBe(413);
     expect(oversized.body.message).toBe("Request body is too large");
     expect(injected.status).toBe(400);
+    expect(nestedInjected.status).toBe(400);
+    expect(nestedInjected.body.message).toBe("Invalid request field");
   });
 
   test("rejects cookie-authenticated mutations without a non-simple request marker", async () => {
