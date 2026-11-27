@@ -20,7 +20,7 @@ export const setAccessToken = (token) => {
 let refreshPromise = null;
 export function refreshSession() {
   refreshPromise ||= raw
-    .post("/auth/refresh")
+    .post("/auth/refresh", undefined, { headers: { "X-Requested-With": "XMLHttpRequest" } })
     .then((res) => {
       accessToken = res.data.data.accessToken;
       return res.data.data; // { user, accessToken }

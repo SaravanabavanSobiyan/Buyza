@@ -9,8 +9,18 @@ import ErrorBoundary from "./components/common/ErrorBoundary";
 import ErrorFallback from "./components/common/ErrorFallback";
 import { HelmetProvider } from "react-helmet-async";
 import { installGlobalErrorHandlers } from "./utils/globalErrors";
+import { initializeErrorReporting } from "./utils/initErrorReporting";
 import { installOverflowCheck } from "./utils/devOverflowCheck";
 import "./index.css";
+
+const apiOrigin = new URL(import.meta.env.VITE_API_URL || "/api", window.location.origin).origin;
+if (apiOrigin !== window.location.origin) {
+  const apiPreconnect = document.createElement("link");
+  apiPreconnect.rel = "preconnect";
+  apiPreconnect.href = apiOrigin;
+  apiPreconnect.crossOrigin = "use-credentials";
+  document.head.append(apiPreconnect);
+}
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, refetchOnWindowFocus: false } },
@@ -18,6 +28,9 @@ const queryClient = new QueryClient({
 
 installGlobalErrorHandlers();
 installOverflowCheck();
+initializeErrorReporting().catch((error) =>
+  console.error("[sentry] error reporting could not be initialized:", error.message)
+);
 
 const AppFallback = (props) => <ErrorFallback {...props} fullScreen />;
 

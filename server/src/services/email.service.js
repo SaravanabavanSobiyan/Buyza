@@ -9,6 +9,7 @@ const STALE_LOCK_MS = 10 * 60 * 1000;
 
 let transportPromise = null;
 let workerTask = null;
+let activeTick = null;
 
 export const __setTransport = (t) => {
   transportPromise = t ? Promise.resolve(t) : null;
@@ -121,18 +122,28 @@ export const processDueJobs = async ({ limit = 20 } = {}) => {
 export const startEmailWorker = () => {
   if (workerTask) return workerTask;
 
-  const tick = async () => {
-    try {
-      await processDueJobs();
-    } catch (error) {
-      console.error('[email] worker error:', error.message);
-    }
+  const tick = () => {
+    if (activeTick) return activeTick;
+    activeTick = processDueJobs()
+      .catch((error) => {
+        console.error('[email] worker error:', error.message);
+      })
+      .finally(() => {
+        activeTick = null;
+      });
+    return activeTick;
   };
 
-  tick();
+  void tick();
   workerTask = cron.schedule('* * * * *', tick);
   console.log('[email] worker started');
   return workerTask;
+};
+
+export const stopEmailWorker = async () => {
+  workerTask?.stop();
+  workerTask = null;
+  if (activeTick) await activeTick;
 };
 
 export const sendWelcomeEmail = (user) =>

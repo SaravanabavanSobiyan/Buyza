@@ -73,7 +73,10 @@ export const sessionFrom = (res) => ({
 });
 export const withSession = (req, session) => {
   if (session.token) req.set("Authorization", `Bearer ${session.token}`);
-  if (session.cookies?.length) req.set("Cookie", session.cookies.map((cookie) => cookie.split(";")[0]).join("; "));
+  if (session.cookies?.length) {
+    req.set("Cookie", session.cookies.map((cookie) => cookie.split(";")[0]).join("; "));
+    req.set("X-Requested-With", "XMLHttpRequest");
+  }
   return req;
 };
 export const newProduct = async (overrides = {}) =>

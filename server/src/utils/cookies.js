@@ -9,7 +9,7 @@ const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 const baseOptions = () => ({
   httpOnly: true,
   secure: env.isProd,
-  sameSite: env.isProd ? "none" : "lax",
+  sameSite: "lax",
   path: "/api/auth",
 });
 

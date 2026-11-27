@@ -9,16 +9,38 @@ import routes from "./routes/index.js";
 import { notFound } from "./middleware/notFound.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import seoRoutes from "./routes/seo.routes.js";
+import healthRoutes from "./routes/health.js";
+import { apiLimiter } from "./middleware/rateLimiter.js";
+import { protectCookieMutations, rejectMongoOperators } from "./middleware/security.js";
 
 const app = express();
-app.set("trust proxy", 1);
+app.set("trust proxy", env.trustProxyHops);
 
-app.use(helmet());
-app.use(cors({ origin: env.clientUrl, credentials: true }));
-app.use(express.json({ limit: "1mb" }));
+app.use(
+  helmet({
+    hsts:
+      env.isProd && env.enableHsts
+        ? { maxAge: 31_536_000, includeSubDomains: false }
+        : false,
+  })
+);
+app.use(
+  cors({
+    origin: (origin, callback) =>
+      !origin || env.allowedOrigins.includes(origin)
+        ? callback(null, true)
+        : callback(null, false),
+    credentials: true,
+  })
+);
+app.use("/api", apiLimiter);
+app.use(express.json({ limit: "100kb" }));
 app.use(cookieParser());
+app.use(rejectMongoOperators);
+app.use(protectCookieMutations);
 if (env.nodeEnv !== "test") app.use(morgan(env.nodeEnv === "production" ? "combined" : "dev"));
 
+app.use("/health", healthRoutes);
 app.use(seoRoutes);
 
 app.use(

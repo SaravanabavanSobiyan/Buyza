@@ -1,13 +1,26 @@
-const express = require('express');
-const mongoose = require('mongoose');
+import { Router } from "express";
+import mongoose from "mongoose";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/ApiError.js";
 
-const router = express.Router();
+const router = Router();
 
-router.get('/', (_request, response) => {
-  response.json({
-    status: 'ok',
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    timestamp: new Date().toISOString(),
-  });
+export const healthCheck = asyncHandler(async (_req, res) => {
+  const database = mongoose.connection.db;
+  if (mongoose.connection.readyState !== 1 || !database) {
+    throw new ApiError(503, "Service unavailable");
+  }
+
+  try {
+    await database.admin().ping();
+  } catch (error) {
+    console.error("[health] database ping failed:", error.message);
+    throw new ApiError(503, "Service unavailable");
+  }
+
+  res.json({ status: "ok" });
 });
-module.exports = router;
+
+router.get("/", healthCheck);
+
+export default router;

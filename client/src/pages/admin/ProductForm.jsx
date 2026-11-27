@@ -8,6 +8,7 @@ import { toMinor, fromMinor, isMoney } from "../../utils/money";
 import FormField, { inputClass } from "../../components/FormField";
 import Button from "../../components/Button";
 import Alert from "../../components/Alert";
+import { resizeImageToLimit } from "../../utils/resizeImage";
 
 const MAX_IMAGES = 8;
 const MAX_SIZE = 3 * 1024 * 1024;
@@ -88,15 +89,22 @@ function ProductEditor({ product }) {
     setImageError("");
     if (!files.length) return;
     if (images.length + files.length > MAX_IMAGES) return setImageError(`You can add up to ${MAX_IMAGES} images`);
-    if (files.some((f) => !TYPES.includes(f.type) || f.size > MAX_SIZE)) {
-      return setImageError("Images must be JPG, PNG or WebP, up to 3 MB each");
+    if (files.some((f) => !TYPES.includes(f.type))) {
+      return setImageError("Images must be JPG, PNG or WebP");
     }
     setUploading(true);
     try {
-      const uploaded = await uploadProductImages(files);
+      const resizedFiles = await Promise.all(files.map((file) => resizeImageToLimit(file)));
+      if (resizedFiles.some((file) => file.size > MAX_SIZE)) {
+        setImageError("Images must be up to 2000 px and 3 MB each");
+        return;
+      }
+      const uploaded = await uploadProductImages(resizedFiles);
       setImages((imgs) => [...imgs, ...uploaded]);
     } catch (err) {
-      setImageError(getErrorMessage(err));
+      setImageError(
+        err?.isAxiosError ? getErrorMessage(err) : err?.message || "Image processing failed"
+      );
     } finally {
       setUploading(false);
     }
@@ -276,7 +284,7 @@ function ProductEditor({ product }) {
           <div>
             <input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={handleFiles} disabled={uploading} className="block text-sm" />
             <p className="mt-1 text-xs text-gray-500">
-              {uploading ? "Uploading…" : `JPG, PNG or WebP, up to 3 MB each. ${images.length}/${MAX_IMAGES} added.`}
+              {uploading ? "Uploading…" : `JPG, PNG or WebP, resized to at most 2000 px and 3 MB each. ${images.length}/${MAX_IMAGES} added.`}
             </p>
           </div>
         )}

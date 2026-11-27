@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import User from "../models/User.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -117,7 +118,7 @@ export const forgotPassword = asyncHandler(async (req, res) => {
 export const resetPassword = asyncHandler(async (req, res) => {
   const user = await User.findOne({
     resetPasswordToken: sha256(req.params.token),
-    resetPasswordExpires: { $gt: new Date() },
+    resetPasswordExpires: mongoose.trusted({ $gt: new Date() }),
   });
   if (!user) throw new ApiError(400, "This reset link is invalid or has expired");
 

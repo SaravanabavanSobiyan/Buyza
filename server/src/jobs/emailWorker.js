@@ -1,3 +1,3 @@
-import { startEmailWorker } from '../services/email.service.js';
+import { startEmailWorker, stopEmailWorker } from '../services/email.service.js';
 
-export { startEmailWorker };
+export { startEmailWorker, stopEmailWorker };

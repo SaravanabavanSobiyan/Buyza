@@ -72,20 +72,19 @@ jobs:
   ci-ok:
     name: CI passed
     if: always()
-    needs: [server, client]
+    needs: [server, client, audit]
     runs-on: ubuntu-latest
     steps:
       - name: Check results
         run: |
-          if [ "${{ needs.server.result }}" != "success" ] || [ "${{ needs.client.result }}" != "success" ]; then
+          if [ "${{ needs.server.result }}" != "success" ] || [ "${{ needs.client.result }}" != "success" ] || [ "${{ needs.audit.result }}" != "success" ]; then
             echo "A required job failed or was cancelled."
             exit 1
           fi
 
   audit:
-    name: Dependency audit (warning only)
+    name: Dependency audit
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -93,7 +92,7 @@ jobs:
           node-version-file: .nvmrc
       - name: Server dependencies
         working-directory: server
-        run: npm audit --omit=dev --audit-level=high
+        run: npm audit --audit-level=high
       - name: Client dependencies
         working-directory: client
-        run: npm audit --omit=dev --audit-level=high
+        run: npm audit --audit-level=high

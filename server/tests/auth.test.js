@@ -164,7 +164,10 @@ maybe(A.refresh)("refresh", () => {
     expect(sessionFrom(refreshed).token).toBeTruthy();
 
     const oldCookie = session.cookies?.map((cookie) => cookie.split(";")[0]).join("; ");
-    const replay = await request(app).post(A.refresh).set("Cookie", oldCookie);
+    const replay = await request(app)
+      .post(A.refresh)
+      .set("Cookie", oldCookie)
+      .set("X-Requested-With", "XMLHttpRequest");
     expect(replay.status).toBe(401);
   });
 });
@@ -236,10 +239,16 @@ describe("profile and password changes", () => {
     expect(userOfProfile(current).email).toBe(user.email);
     expect(text(current)).not.toMatch(/"password"/);
 
-    const updated = await request(app)
+    const escalation = await request(app)
       .patch(A.updateProfile.path)
       .set("Authorization", `Bearer ${token}`)
       .send({ name: "New Name", role: "admin", isBlocked: true });
+    expect(escalation.status).toBe(400);
+
+    const updated = await request(app)
+      .patch(A.updateProfile.path)
+      .set("Authorization", `Bearer ${token}`)
+      .send({ name: "New Name" });
     expect(updated.status).toBe(200);
     const saved = await User.findById(user._id);
     expect(saved.name).toBe("New Name");

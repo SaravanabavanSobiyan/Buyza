@@ -23,6 +23,7 @@ export const registerSchema = z
     password,
     confirmPassword: requiredString("Confirm password is required"),
   })
+  .strict()
   .superRefine(matchPasswords());
 
 export const loginSchema = z.object({

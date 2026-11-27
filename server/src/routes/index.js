@@ -16,12 +16,11 @@ import contactRoutes from "./contact.routes.js";
 import orderAdminRoutes from "./order.admin.routes.js";
 import adminCustomerRoutes from "./customer.routes.js";
 import dashboardRoutes from "./dashboard.routes.js";
+import healthRoutes from "./health.js";
 
 const router = Router();
 
-router.get("/health", (req, res) => {
-  res.json({ success: true, status: "ok", time: new Date().toISOString() });
-});
+router.use("/health", healthRoutes);
 
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);

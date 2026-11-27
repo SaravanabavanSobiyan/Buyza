@@ -5,6 +5,7 @@ import { validate } from "../middleware/validate.js";
 import { handleReviewUpload } from "../utils/reviewUpload.js";
 import * as reviews from "../controllers/review.controller.js";
 import { reviewSchema } from "./review.validation.js";
+import { skipRateLimitsInTests } from "../middleware/rateLimiter.js";
 
 const router = Router({ mergeParams: true });
 
@@ -14,6 +15,7 @@ const writeLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req) => String(req.user?._id || "anon"),
+  skip: skipRateLimitsInTests,
   validate: { keyGeneratorIpFallback: false },
 });
 

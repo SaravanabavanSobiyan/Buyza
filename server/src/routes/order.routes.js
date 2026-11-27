@@ -3,6 +3,7 @@ import rateLimit from "express-rate-limit";
 import { protect } from "../middleware/auth.js";
 import { optionalAuth } from "../middleware/optionalAuth.js";
 import { validate } from "../middleware/validate.js";
+import { skipRateLimitsInTests } from "../middleware/rateLimiter.js";
 import * as orders from "../controllers/order.controller.js";
 import {
   cancelOrderSchema,
@@ -15,6 +16,7 @@ const placeOrderLimiter = rateLimit({
   limit: 10,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: skipRateLimitsInTests,
 });
 
 router.post(

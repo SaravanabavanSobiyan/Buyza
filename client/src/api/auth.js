@@ -17,7 +17,9 @@ export async function loginUser(payload) {
 
 export async function logoutUser() {
   try {
-    await api.post("/auth/logout");
+    await api.post("/auth/logout", undefined, {
+      headers: { "X-Requested-With": "XMLHttpRequest" },
+    });
   } finally {
     setAccessToken(null);
   }

@@ -27,6 +27,10 @@ export function errorHandler(err, req, res, next) {
     status = 400;
     message = "Invalid JSON body";
   }
+  if (err.type === "entity.too.large") {
+    status = 413;
+    message = "Request body is too large";
+  }
 
   if (status === 500) console.error(err);
 

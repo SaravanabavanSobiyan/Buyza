@@ -1,6 +1,13 @@
 import { Router } from "express";
 import { validate } from "../middleware/validate.js";
-import { loginLimiter, forgotPasswordLimiter } from "../middleware/rateLimiter.js";
+import {
+  forgotPasswordLimiter,
+  loginEmailLimiter,
+  loginLimiter,
+  refreshLimiter,
+  registerLimiter,
+  resetPasswordLimiter,
+} from "../middleware/rateLimiter.js";
 import {
   registerSchema,
   loginSchema,
@@ -20,12 +27,12 @@ import {
 
 const router = Router();
 
-router.post("/register", validate(registerSchema), register);
-router.post("/login", loginLimiter, validate(loginSchema), login);
-router.post("/refresh", refresh);
-router.post("/logout", logout);
-router.post("/forgot-password", forgotPasswordLimiter, validate(forgotPasswordSchema), forgotPassword);
-router.post("/reset-password/:token", validate(resetPasswordSchema), resetPassword);
+router.post("/register", validate(registerSchema), registerLimiter, register);
+router.post("/login", validate(loginSchema), loginLimiter, loginEmailLimiter, login);
+router.post("/refresh", refreshLimiter, refresh);
+router.post("/logout", refreshLimiter, logout);
+router.post("/forgot-password", validate(forgotPasswordSchema), forgotPasswordLimiter, forgotPassword);
+router.post("/reset-password/:token", validate(resetPasswordSchema), resetPasswordLimiter, resetPassword);
 router.get("/:provider", startOAuth);
 router.get("/:provider/callback", finishOAuth);
 

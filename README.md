@@ -10,8 +10,8 @@ do not support `&&`, so run each command separately:
 
 ```powershell
 Set-Location .\server
-Copy-Item .env.example .env       # fill MONGO_URI and JWT secrets if needed
-npm install
+Copy-Item .env.example .env       # replace local placeholders with private values
+npm ci
 npm run seed
 npm run dev
 ```
@@ -25,13 +25,13 @@ In a second PowerShell window, run the client commands from the `client` directo
 ```powershell
 Set-Location .\client
 Copy-Item .env.example .env
-npm install
+npm ci
 npm run dev
 ```
 
 On PowerShell 7 or newer, `&&` is supported, but the commands must still be run
 from their respective directories.
-Server: http://localhost:5000/api/health  |  Client: http://localhost:5173
+Server: http://localhost:5000/api/health | Client: http://localhost:5173
 
 ### Local MongoDB transactions (Windows)
 
@@ -103,4 +103,76 @@ of at least 12 characters in your local server environment. The seed script
 refuses to run without them and has no default admin credentials.
 
 ## Branching
+
 `main` (production) <- `develop` (integration) <- `feature/*`
+
+## Architecture
+
+- `client/src/pages` contains route-level pages; `client/src/components` contains
+  shared storefront and admin UI.
+- `client/src/api` contains HTTP clients; `client/src/store` contains Redux state.
+- `server/src/routes` defines API endpoints, `controllers` handles HTTP, and
+  `services` contains business logic.
+- `server/src/models` contains Mongoose models; `validators` contains Zod input
+  schemas; `jobs` starts background workers.
+- Orders and cancellations use MongoDB transactions, so local MongoDB must run
+  as a replica set. The test suite uses an in-memory replica set.
+
+## Environment configuration
+
+Copy the example files and keep real values out of Git:
+
+| Variable                                               | Where            | Purpose                                                          |
+| ------------------------------------------------------ | ---------------- | ---------------------------------------------------------------- |
+| `PORT`                                                 | Server           | HTTP port (defaults to the configured app port)                  |
+| `MONGO_URI`                                            | Server           | MongoDB replica-set connection string                            |
+| `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`              | Server           | Separate random secrets, at least 32 characters each             |
+| `JWT_ACCESS_EXPIRES`                                   | Server           | Access-token lifetime                                            |
+| `CLIENT_URL`, `ALLOWED_ORIGINS`                        | Server           | Frontend URL and exact comma-separated CORS origins              |
+| `TRUST_PROXY_HOPS`                                     | Server           | Number of trusted reverse-proxy hops; set for the selected host  |
+| `ENABLE_HSTS`                                          | Server           | Turn on only after production HTTPS is verified                  |
+| `API_URL`, `SITE_URL`, `ALLOW_INDEXING`                | Server           | Public API/canonical site URLs and server-side indexing behavior |
+| `SMTP_*`, `EMAIL_FROM`                                 | Server           | Transactional email provider settings                            |
+| `STORE_NAME`                                           | Server           | Store name used in messages                                      |
+| `CLOUDINARY_*`                                         | Server           | Production image storage credentials                             |
+| `RECAPTCHA_SECRET`                                     | Server           | Private reCAPTCHA verification key                               |
+| `GOOGLE_*`, `FACEBOOK_*`                               | Server           | Optional OAuth credentials                                       |
+| `ADMIN_EMAIL`, `ADMIN_PASSWORD`                        | Server seed only | Initial admin; no default credential is provided                 |
+| `VITE_API_URL`, `VITE_SITE_URL`, `VITE_ALLOW_INDEXING` | Client           | Public API/canonical site URLs and client indexing behavior      |
+| `VITE_RECAPTCHA_SITE_KEY`                              | Client           | Public reCAPTCHA site key (not a secret)                         |
+| `VITE_SENTRY_DSN`                                      | Client           | Optional public Sentry DSN                                       |
+
+Production startup requires a MongoDB URI, strong JWT secrets, an HTTPS site URL,
+an explicit origin allowlist, and `TRUST_PROXY_HOPS`. Configure production values
+in the hosting provider's secret manager, not in `.env` files.
+
+## Scripts
+
+| Package | Command                 | Purpose                                               |
+| ------- | ----------------------- | ----------------------------------------------------- |
+| Server  | `npm run dev`           | Start the API with Nodemon                            |
+| Server  | `npm start`             | Start the production API                              |
+| Server  | `npm run lint`          | Lint server code                                      |
+| Server  | `npm test`              | Run server tests                                      |
+| Server  | `npm run test:ci`       | Run serial server tests with coverage thresholds      |
+| Server  | `npm run test:watch`    | Run Jest in watch mode                                |
+| Server  | `npm run seed`          | Seed catalog and require an explicit admin credential |
+| Server  | `npm run seed:shipping` | Add or refresh shipping methods                       |
+| Client  | `npm run dev`           | Start Vite development server                         |
+| Client  | `npm run build`         | Create the production client bundle                   |
+| Client  | `npm run preview`       | Preview the production bundle locally                 |
+| Client  | `npm test`              | Run Vitest                                            |
+| Client  | `npm run lint`          | Lint client code                                      |
+
+## Project guides
+
+- [Local setup](docs/SETUP.md)
+- [OpenAPI reference](docs/openapi.yaml)
+- [Admin guide](docs/ADMIN_GUIDE.md)
+- [Key rotation](docs/KEY_ROTATION.md)
+- [Deployment and operations runbook](docs/RUNBOOK.md)
+- [Staging UAT checklist](docs/UAT_CHECKLIST.md)
+
+Hosting, domain, email-provider, and production database choices are not yet
+configured. Do not treat this repository as live until staging UAT, backup
+restore, owner approval, and the go-live checklist are complete.

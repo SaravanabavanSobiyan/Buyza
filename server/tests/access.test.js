@@ -138,7 +138,8 @@ describe("permissions and session blocking", () => {
     await User.updateOne({ _id: customer._id }, { $set: { isBlocked: true } });
     const response = await request(app)
       .post("/api/auth/refresh")
-      .set("Cookie", login.headers["set-cookie"]);
+      .set("Cookie", login.headers["set-cookie"])
+      .set("X-Requested-With", "XMLHttpRequest");
 
     expect(response.status).toBe(403);
     expect(response.body.code).toBe("ACCOUNT_SUSPENDED");
